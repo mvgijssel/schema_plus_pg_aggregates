@@ -48,7 +48,7 @@ Some things to know about to help you develop and test:
 
 <!-- SCHEMA_DEV: TEMPLATE USES SCHEMA_DEV - begin -->
 <!-- These lines are auto-inserted from a schema_dev template -->
-* **schema_dev**:  schema_plus_pg_aggregates uses [schema_dev](https://github.com/SchemaPlus/schema_dev) to
+* **schema_dev**:  SchemaPlus::PgAggregates uses [schema_dev](https://github.com/SchemaPlus/schema_dev) to
   facilitate running rspec tests on the matrix of ruby, activerecord, and database
   versions that the gem supports, both locally and on
   [travis-ci](http://travis-ci.org/SchemaPlus/schema_plus_pg_aggregates)
@@ -68,7 +68,7 @@ Some things to know about to help you develop and test:
 
 <!-- SCHEMA_DEV: TEMPLATE USES SCHEMA_PLUS_CORE - begin -->
 <!-- These lines are auto-inserted from a schema_dev template -->
-* **schema_plus_core**: schema_plus_pg_aggregates uses the SchemaPlus::Core API that
+* **schema_plus_core**: SchemaPlus::PgAggregates uses the SchemaPlus::Core API that
   provides middleware callback stacks to make it easy to extend
   ActiveRecord's behavior.  If that API is missing something you need for
   your contribution, please head over to
@@ -79,7 +79,7 @@ Some things to know about to help you develop and test:
 
 <!-- SCHEMA_DEV: TEMPLATE USES SCHEMA_MONKEY - begin -->
 <!-- These lines are auto-inserted from a schema_dev template -->
-* **schema_monkey**: schema_plus_pg_aggregates is implemented as a
+* **schema_monkey**: SchemaPlus::PgAggregates is implemented as a
   [schema_monkey](https://github.com/SchemaPlus/schema_monkey) client,
   using [schema_monkey](https://github.com/SchemaPlus/schema_monkey)'s
   convention-based protocols for extending ActiveRecord and using middleware stacks.
