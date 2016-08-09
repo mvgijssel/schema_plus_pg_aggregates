@@ -3,36 +3,27 @@ lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'schema_plus_pg_aggregates/version'
 
-Gem::Specification.new do |spec|
-  spec.name          = "schema_plus_pg_aggregates"
-  spec.version       = SchemaPlusPgAggregates::VERSION
-  spec.authors       = ["mvgijssel"]
-  spec.email         = ["maarten@hackerone.com"]
+Gem::Specification.new do |gem|
+  gem.name          = "schema_plus_pg_aggregates"
+  gem.version       = SchemaPlusPgAggregates::VERSION
+  gem.authors       = ["mvgijssel"]
+  gem.email         = ["maarten@hackerone.com"]
+  gem.summary       = %q{Adds support in ActiveRecord for PostgreSQL aggregates.}
+  gem.homepage      = "https://github.com/mvgijssel/schema_plus_pg_aggregates"
+  gem.license       = "MIT"
 
-  spec.summary       = %q{Adds support in ActiveRecord for PostgreSQL aggregates.}
-  spec.homepage      = "https://github.com"
-  spec.license       = "MIT"
+  gem.files         = `git ls-files -z`.split("\x0")
+  gem.executables   = gem.files.grep(%r{^bin/}) { |f| File.basename(f) }
+  gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
+  gem.require_paths = ["lib"]
 
-  # Prevent pushing this gem to RubyGems.org. To allow pushes either set the 'allowed_push_host'
-  # to allow pushing to a single host or delete this section to allow pushing to any host.
-  if spec.respond_to?(:metadata)
-    spec.metadata['allowed_push_host'] = "TODO: Set to 'http://mygemserver.com'"
-  else
-    raise "RubyGems 2.0 or newer is required to protect against public gem pushes."
-  end
+  gem.add_dependency "activerecord", "~> 4.2"
+  gem.add_dependency "schema_plus_core", "~> 1.0", ">= 1.0.2"
 
-  spec.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
-  spec.bindir        = "exe"
-  spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
-  spec.require_paths = ["lib"]
-
-  spec.add_dependency "activerecord", "~> 4.2"
-  spec.add_dependency "schema_plus_core", "~> 1.0"
-
-  spec.add_development_dependency "bundler", "~> 1.12"
-  spec.add_development_dependency "rake", "~> 10.0"
-  spec.add_development_dependency "rspec", "~> 3.0"
-  spec.add_development_dependency "schema_dev", "~> 3.6"
-  spec.add_development_dependency "simplecov"
-  spec.add_development_dependency "simplecov-gem-profile"
+  gem.add_development_dependency "bundler", "~> 1.7"
+  gem.add_development_dependency "rake", "~> 10.0"
+  gem.add_development_dependency "rspec", "~> 3.0"
+  gem.add_development_dependency "schema_dev", "~> 3.7"
+  gem.add_development_dependency "simplecov"
+  gem.add_development_dependency "simplecov-gem-profile"
 end
