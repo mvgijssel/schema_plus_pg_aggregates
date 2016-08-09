@@ -11,3 +11,6 @@
 *.swp
 
 Gemfile.local
+
+*.lock
+/log/
