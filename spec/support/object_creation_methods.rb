@@ -7,8 +7,7 @@ module SchemaPlusPgAggregates::ObjectCreationMethods
       arguments: arguments
   end
 
-
-
+  # TODO: prolly better to drop only aggregates created during example
   def drop_aggregates
     results = ActiveRecord::Base.connection.query(<<-SQL, 'SCHEMA')
       SELECT

@@ -6,8 +6,8 @@ describe 'pg_aggregates', postgresql: :only do
 
   describe 'aggregates' do
     it 'returns all aggregates' do
-      create_aggregate('someagg1')
-      create_aggregate('someagg2')
+      create_aggregate 'someagg1'
+      create_aggregate 'someagg2'
       expect(migration.aggregates.count).to eq 2
     end
   end
@@ -27,7 +27,7 @@ describe 'pg_aggregates', postgresql: :only do
   describe 'drop_aggregate' do
     it 'removes the aggregate' do
       create_aggregate 'someagg', arguments: ['integer']
-      expect { migration.drop_aggregate('someagg', arguments: ['integer']) }
+      expect { migration.drop_aggregate 'someagg', arguments: ['integer'] }
         .to change { migration.aggregates.count }.from(1).to(0)
     end
   end
