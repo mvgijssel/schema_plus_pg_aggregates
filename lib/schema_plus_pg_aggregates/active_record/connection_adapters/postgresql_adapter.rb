@@ -7,6 +7,8 @@ module SchemaPlusPgAggregates
             SELECT
               p.proname AS name,
               (SELECT string_agg(format_type(t, null), ',') FROM unnest(p.proargtypes::oid[]) t) AS arguments,
+
+              -- below here are the settings specific to the aggregate
               a.aggtransfn::varchar AS state_function,
               format_type(a.aggtranstype, null) AS state_data_type,
               a.agginitval AS initial_condition
