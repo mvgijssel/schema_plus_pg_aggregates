@@ -6,8 +6,8 @@ describe 'pg_aggregates', postgresql: :only do
 
   describe 'aggregates' do
     it 'returns all aggregates' do
-      create_aggregate 'someagg1'
-      create_aggregate 'someagg2'
+      create_aggregate name: 'someagg1'
+      create_aggregate name: 'someagg2'
       expect(migration.aggregates.count).to eq 2
     end
   end
@@ -17,16 +17,34 @@ describe 'pg_aggregates', postgresql: :only do
       expect { create_aggregate }.to change { migration.aggregates.count }.from(0).to(1)
     end
 
+    it 'has the right attributes' do
+      create_function 'somefunc'
+      migration.create_aggregate 'someagg1',
+        arguments: ['integer'],
+        state_function: 'somefunc',
+        state_data_type: 'integer',
+        initial_condition: 0
+
+      expect(migration.aggregates).to eq [
+        SchemaPlusPgAggregates::AggregateDefinition.new(
+          name: 'someagg1',
+          arguments: ['integer'],
+          state_function: 'somefunc',
+          state_data_type: 'integer',
+          initial_condition: '0',
+        )
+      ]
+    end
+
     it 'creates an aggregate when no arguments are given' do
-      create_aggregate "someagg", arguments: []
-      expect(migration.aggregates.count).to eq 1
-      expect(migration.aggregates[0].arguments).to eq []
+      create_aggregate name: "someagg", arguments: []
+      expect(migration.aggregates.map(&:arguments)).to eq [[]]
     end
   end
 
   describe 'drop_aggregate' do
     it 'removes the aggregate' do
-      create_aggregate 'someagg', arguments: ['integer']
+      create_aggregate name: 'someagg', arguments: ['integer']
       expect { migration.drop_aggregate 'someagg', arguments: ['integer'] }
         .to change { migration.aggregates.count }.from(1).to(0)
     end

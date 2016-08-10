@@ -1,10 +1,17 @@
 module SchemaPlusPgAggregates::ObjectCreationMethods
-  def create_aggregate(name = 'someagg', arguments: ['integer'])
-    create_function("#{name}func", arguments: arguments + ['integer'])
+  def create_aggregate(
+    name: 'someagg',
+    arguments: ['integer'],
+    state_function: "#{name}func",
+    state_data_type: 'integer',
+    initial_condition: 0
+  )
+    create_function(state_function, arguments: arguments + ['integer'])
     ActiveRecord::Base.connection.create_aggregate name,
-      state_function: "#{name}func",
-      state_data_type: 'integer',
-      arguments: arguments
+      state_function: state_function,
+      state_data_type: state_data_type,
+      arguments: arguments,
+      initial_condition: 0
   end
 
   # TODO: prolly better to drop only aggregates created during example
