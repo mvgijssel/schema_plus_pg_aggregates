@@ -32,4 +32,31 @@ module SchemaPlusPgAggregates::ObjectCreationMethods
       DROP FUNCTION #{name}(#{arguments.join(', ')})
     SQL
   end
+
+  def drop_aggregates
+    results = ActiveRecord::Base.connection.query(<<-SQL, 'SCHEMA')
+      SELECT
+        'DROP AGGREGATE ' || n.nspname || '.' || proname || '(' ||
+        CASE WHEN pronargs > 0 THEN oidvectortypes(proargtypes)
+             ELSE '*'
+        END
+        || ')' || ' CASCADE;'
+      FROM
+        pg_proc p
+      INNER JOIN pg_namespace n ON n.oid = p.pronamespace
+      WHERE p.proisagg = true
+        AND n.nspname = ANY (current_schemas(false))
+    SQL
+
+    results.each do |result|
+      # TODO for some reason every result is an array with a single item?
+      ActiveRecord::Base.connection.execute result[0]
+    end
+  end
+
+  RSpec.configure do |config|
+    config.after :each do |example|
+      drop_aggregates
+    end
+  end
 end
