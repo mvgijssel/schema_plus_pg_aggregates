@@ -1,3 +1,5 @@
+require 'pry'
+require 'pry-remote'
 require 'simplecov'
 require 'simplecov-gem-profile'
 SimpleCov.start "gem"

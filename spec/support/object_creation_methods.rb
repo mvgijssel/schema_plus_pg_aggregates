@@ -1,30 +1,35 @@
 module SchemaPlusPgAggregates::ObjectCreationMethods
-  def create_aggregate
-    create_function
-    ActiveRecord::Base.connection.create_aggregate 'someagg',
-      state_function: 'somefunc',
+  def create_aggregate(name = 'someagg', arguments: ['integer'])
+    create_function("#{name}func", arguments: arguments + ['integer'])
+    ActiveRecord::Base.connection.create_aggregate name,
+      state_function: "#{name}func",
       state_data_type: 'integer',
-      arguments: ['integer']
+      arguments: arguments
   end
 
-  def drop_aggregate
-    ActiveRecord::Base.connection.drop_aggregate 'someagg', arguments: ['integer']
-    drop_function
+  # TODO: need to have some sort of After rspec hook which cleans out all created aggregates
+  # after each spec
+  def drop_aggregate(name = 'someagg', arguments: ['integer'])
+    ActiveRecord::Base.connection.drop_aggregate name, arguments: arguments
+    drop_function("#{name}func", arguments: arguments + ['integer'])
   end
 
-  def create_function
+  def create_function(name = 'someaggfunc', arguments: ['integer', 'integer'])
+    function_arguments = arguments.each_with_index.map do |argument, index|
+      "$#{index + 1}"
+    end
     ActiveRecord::Base.connection.execute <<-SQL
-      CREATE FUNCTION somefunc(integer, integer) RETURNS integer
-          LANGUAGE sql
-          AS $_$
-            SELECT $1 + $2
-          $_$;
-        SQL
+      CREATE FUNCTION #{name}(#{arguments.join(', ')}) RETURNS integer
+        LANGUAGE sql
+        AS $_$
+          SELECT #{function_arguments.join(' + ')}
+        $_$;
+    SQL
   end
 
-  def drop_function
+  def drop_function(name = 'somefunc', arguments: ['integer', 'integer'])
     ActiveRecord::Base.connection.execute <<-SQL
-      DROP FUNCTION somefunc(integer, integer)
+      DROP FUNCTION #{name}(#{arguments.join(', ')})
     SQL
   end
 end

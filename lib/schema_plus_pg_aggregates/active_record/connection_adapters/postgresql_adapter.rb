@@ -18,7 +18,7 @@ module SchemaPlusPgAggregates
           SQL
 
           result.to_hash.map do |row|
-            row['arguments'] = row['arguments'].split(',')
+            row['arguments'] = row['arguments'].present? ? row['arguments'].split(',') : []
             AggregateDefinition.new row.symbolize_keys
           end
         end
