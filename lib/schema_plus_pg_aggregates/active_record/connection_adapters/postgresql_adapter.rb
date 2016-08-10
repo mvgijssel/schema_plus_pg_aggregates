@@ -36,9 +36,6 @@ module SchemaPlusPgAggregates
           SQL
         end
 
-        def alter_aggregate
-        end
-
         def drop_aggregate(name, arguments: [])
           execute <<-SQL
             DROP AGGREGATE #{name}(#{arguments.empty? ? "*" : arguments.join(', ')})

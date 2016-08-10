@@ -7,15 +7,16 @@ describe 'pg_aggregates', postgresql: :only do
   describe 'aggregates' do
     it 'returns all aggregates' do
       begin
-        create_function
-        migration.create_aggregate 'someagg',
-          state_function: 'somefunc',
-          state_data_type: 'integer',
-          arguments: ['integer']
+        create_aggregate
       ensure
-        migration.drop_aggregate 'someagg', arguments: ['integer']
-        dop_function
+        drop_aggregate
       end
     end
+  end
+
+  describe 'create_aggregate' do
+  end
+
+  describe 'drop_aggregate' do
   end
 end
