@@ -11,7 +11,7 @@ module SchemaPlusPgAggregates::ObjectCreationMethods
       state_function: state_function,
       state_data_type: state_data_type,
       arguments: arguments,
-      initial_condition: 0
+      initial_condition: initial_condition
   end
 
   # TODO: prolly better to drop only aggregates created during example
@@ -69,11 +69,10 @@ module SchemaPlusPgAggregates::ObjectCreationMethods
     end
   end
 
-  RSpec.configure do |config|
-    config.include SchemaPlusPgAggregates::ObjectCreationMethods
-    config.after :each do |example|
-      drop_aggregates
-      drop_functions
-    end
+  def dump_schema(opts={})
+    stream = StringIO.new
+    ActiveRecord::SchemaDumper.ignore_tables = Array.wrap(opts[:ignore]) || []
+    ActiveRecord::SchemaDumper.dump(ActiveRecord::Base.connection, stream)
+    stream.string
   end
 end

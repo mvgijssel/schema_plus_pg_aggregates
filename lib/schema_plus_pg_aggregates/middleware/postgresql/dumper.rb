@@ -5,7 +5,7 @@ module SchemaPlusPgAggregates
       module Tables
         module Postgresql
           def after(env)
-            env.connection.aggregates.each do |aggregate|
+            env.connection.aggregates.sort_by(&:name).each do |aggregate|
               params = [aggregate.name.inspect]
               params << ":arguments => #{aggregate.arguments}" unless aggregate.arguments.nil?
               params << ":state_function => #{aggregate.state_function.inspect}"
