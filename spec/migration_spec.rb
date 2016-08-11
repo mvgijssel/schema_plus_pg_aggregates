@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'pg_aggregates', postgresql: :only do
+describe 'ActiveRecord::Migration', postgresql: :only do
   before(:all) { ActiveRecord::Migration.verbose = false }
   let(:migration) { ActiveRecord::Migration }
 
