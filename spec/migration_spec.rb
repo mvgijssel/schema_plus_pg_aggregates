@@ -14,7 +14,14 @@ describe 'pg_aggregates', postgresql: :only do
 
   describe 'create_aggregate' do
     it 'creates the aggregate' do
-      expect { create_aggregate }.to change { migration.aggregates.count }.from(0).to(1)
+      create_function 'somefunc'
+      expect do
+        migration.create_aggregate 'someagg',
+          arguments: ['integer'],
+          state_function: 'somefunc',
+          state_data_type: 'integer',
+          initial_condition: 0
+      end.to change { migration.aggregates.count }.from(0).to(1)
     end
 
     it 'has the right attributes' do
